@@ -534,7 +534,7 @@ const authModel=mongoose.model('auth');
 
    let logoutFunction=(req,res)=>
    {
-      authModel.findOneAndRemove({userId:req.params.userId})
+      authModel.findOneAndRemove({userId:req.body.userId})
       .exec(
          (err,result)=>
          {
