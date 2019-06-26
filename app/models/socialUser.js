@@ -1,31 +1,36 @@
 const mongoose=require('mongoose');
 const schema=mongoose.Schema;
-const time=require('./../libs/timeLib');
 
-const authSchema=new schema(
+let socialUserSchema=new schema(
     {
         userId:
         {
             type:String,
-            default:''
+            default:'',
+            unique:true,
+            index:true
         },
-        token:
+        firstName:
         {
             type:String,
             default:''
         },
-        secretKey:
+        lastName:
         {
             type:String,
             default:''
         },
-        tokenGenerationTime:
+        email:
+        {
+            type:String,
+            default:''
+        },
+        createdOn:
         {
             type:Date,
-            default:time.now()
+            default:Date.now
         }
+    });
 
-    }
-);
 
-mongoose.model('auth',authSchema);   
+mongoose.model('socialUser',socialUserSchema);

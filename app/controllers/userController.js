@@ -93,9 +93,9 @@ const authModel=mongoose.model('auth');
                 {
                     let newUser=new userModel(
                         {
-                            userId:shortId.generate,
+                            userId:shortId.generate(),
                             firstName:req.body.firstName,
-                            lastName:req.body.firstName,
+                            lastName:req.body.lastName,
                             email:req.body.email,
                             password:passwordGeneratorLib.hashPassword(req.body.password),
                             mobileNumber:req.body.mobileNumber,
@@ -399,14 +399,14 @@ const authModel=mongoose.model('auth');
   let getAllUser=(req,res)=>
   {
       userModel.find()
-      .select('-_id -password - __v')
+      .select('-_id -password -__v')
       .lean()
       .exec(
           (err,allUserDetails)=>
           {
             if(err)
             {
-                loggerLib.captureError('Error while fetch all user details','getAllUser()',10);
+                loggerLib.captureError(err+'Error while fetch all user details','getAllUser()',10);
                 let apiresponse=responseLib.generate(true,'Failed to fetch user details',500,null);
                 res.send(apiresponse);
             }
@@ -435,7 +435,7 @@ const authModel=mongoose.model('auth');
     let getSingleUser=(req,res)=>
     {
         userModel.find({userId:req.params.userId})
-      .select('-_id -password - __v')
+      .select('-_id -password -__v')
       .lean()
       .exec(
           (err,userDetails)=>
@@ -534,7 +534,7 @@ const authModel=mongoose.model('auth');
 
    let logoutFunction=(req,res)=>
    {
-      authModel.findOneAndRemove({userId:req.params.userId})
+      authModel.findOneAndRemove({userId:req.body.userId})
       .exec(
          (err,result)=>
          {
